@@ -1,17 +1,17 @@
-import { Module } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
-import { HttpModule } from '@nestjs/axios' 
-import { TypeOrmModule } from '@nestjs/typeorm'
-import { JwtModule } from '@nestjs/jwt'
-import { Preference } from './preference.entity'
-import { PreferenceService } from './preference.service'
-import { PreferenceRepository } from './preference.repository'
-import { PreferenceController } from './preference.controller'
+import { Module } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { HttpModule } from '@nestjs/axios';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { JwtModule } from '@nestjs/jwt';
+import { Preference } from './preference.entity';
+import { PreferenceService } from './preference.service';
+import { PreferenceRepository } from './preference.repository';
+import { PreferenceController } from './preference.controller';
 import { RefreshTokenModule } from '@modules/refresh-token/refresh-token.module';
 
 @Module({
-    imports: [
-        HttpModule,
+  imports: [
+    HttpModule,
     JwtModule.registerAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
@@ -22,10 +22,10 @@ import { RefreshTokenModule } from '@modules/refresh-token/refresh-token.module'
         };
       },
     }),
-        TypeOrmModule.forFeature([Preference]),
-        RefreshTokenModule
-    ],
-    controllers: [PreferenceController],
-    providers: [PreferenceService, PreferenceRepository],
+    TypeOrmModule.forFeature([Preference]),
+    RefreshTokenModule,
+  ],
+  controllers: [PreferenceController],
+  providers: [PreferenceService, PreferenceRepository],
 })
 export class PreferenceModule {}

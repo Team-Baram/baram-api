@@ -14,22 +14,18 @@ export class UserRepository {
     return this.dataSource.getRepository(User);
   }
 
-  async findByOauth(
-    oauthId: string,
-    provider: string,
-  ): Promise<User | null> {
+  async findByOauth(oauthId: string, provider: string): Promise<User | null> {
     try {
-      return await this.repo.findOne({ where: { oauthId, provider }, relations: ['preferences'] });
+      return await this.repo.findOne({
+        where: { oauthId, provider },
+        relations: ['preferences'],
+      });
     } catch (err) {
-      throw new InternalServerErrorException(
-        'findByOauth in UserRepository',
-      );
+      throw new InternalServerErrorException('findByOauth in UserRepository');
     }
   }
 
-  async findByNickname(
-      nickname: string
-  ): Promise<User | null> {
+  async findByNickname(nickname: string): Promise<User | null> {
     try {
       return await this.repo.findOne({ where: { nickname } });
     } catch (err) {
@@ -49,9 +45,14 @@ export class UserRepository {
 
   async findByIdWithPreferences(id: string): Promise<User | null> {
     try {
-      return await this.repo.findOne({ where: { id }, relations: ['preferences'] });
+      return await this.repo.findOne({
+        where: { id },
+        relations: ['preferences'],
+      });
     } catch (err) {
-      throw new InternalServerErrorException('findByIdWithPreferences in UserRepository');
+      throw new InternalServerErrorException(
+        'findByIdWithPreferences in UserRepository',
+      );
     }
   }
 
@@ -63,9 +64,7 @@ export class UserRepository {
         return await repo.save(user);
       });
     } catch (err) {
-      throw new InternalServerErrorException(
-        'save in UserRepository',
-      );
+      throw new InternalServerErrorException('save in UserRepository');
     }
   }
 
@@ -111,9 +110,7 @@ export class UserRepository {
       if (err instanceof NotFoundException) {
         throw err;
       } else {
-        throw new InternalServerErrorException(
-          'remove in UserRepository',
-        );
+        throw new InternalServerErrorException('remove in UserRepository');
       }
     }
   }

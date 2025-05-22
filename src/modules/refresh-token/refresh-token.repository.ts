@@ -1,7 +1,4 @@
-import {
-  Injectable,
-  InternalServerErrorException,
-} from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { RefreshToken } from './refresh-token.entity';
 
@@ -15,7 +12,10 @@ export class RefreshTokenRepository {
 
   async findByTokenHash(tokenHash: string): Promise<RefreshToken | null> {
     try {
-      return await this.repo.findOne({ where: { tokenHash }, relations: ['user'] });
+      return await this.repo.findOne({
+        where: { tokenHash },
+        relations: ['user'],
+      });
     } catch (err) {
       throw new InternalServerErrorException(
         'findByTokenHash in RefreshTokenRepository',
@@ -49,10 +49,15 @@ export class RefreshTokenRepository {
     }
   }
 
-  async deleteTokenByUserIdAndUserAgent(userId: string, userAgent: string): Promise<void> {
+  async deleteTokenByUserIdAndUserAgent(
+    userId: string,
+    userAgent: string,
+  ): Promise<void> {
     try {
       await this.dataSource.transaction(async (manager) => {
-        await manager.getRepository(RefreshToken).delete({ user: {id: userId}, userAgent });
+        await manager
+          .getRepository(RefreshToken)
+          .delete({ user: { id: userId }, userAgent });
       });
     } catch (err) {
       throw new InternalServerErrorException(

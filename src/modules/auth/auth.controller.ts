@@ -15,9 +15,9 @@ import { Request, Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import { AuthService } from './auth.service';
 import { NaverService } from './naver.service';
-import { RefreshTokenService } from '@modules/refresh-token/refresh-token.service'
+import { RefreshTokenService } from '@modules/refresh-token/refresh-token.service';
 import { base64urlEncode, encrypt } from '@utils';
-import { AuthGuard } from '@guards/auth.guard'
+import { AuthGuard } from '@guards/auth.guard';
 
 @Controller('/api/auth')
 export class AuthController {
@@ -25,7 +25,7 @@ export class AuthController {
     private readonly configService: ConfigService,
     private readonly authService: AuthService,
     private readonly naverService: NaverService,
-    private readonly refreshTokenService: RefreshTokenService 
+    private readonly refreshTokenService: RefreshTokenService,
   ) {}
 
   @Get('/naver')
@@ -123,7 +123,9 @@ export class AuthController {
           sameSite: 'lax',
         });
 
-        return res.redirect(this.configService.get<string>('WEB_DOMAIN') + '/onboarding/nickname');
+        return res.redirect(
+          this.configService.get<string>('WEB_DOMAIN') + '/onboarding/nickname',
+        );
       }
     } catch (err) {
       throw new HttpException(
@@ -224,10 +226,14 @@ export class AuthController {
   @Post('/logout')
   async logout(@Req() req: Request, @Res() res: Response) {
     const userAgent = req.headers['user-agent'] || 'unknown';
-    await this.refreshTokenService.revokeToken(req.user!.id, userAgent)
+    await this.refreshTokenService.revokeToken(req.user!.id, userAgent);
 
-    res.clearCookie(base64urlEncode(this.configService.get<string>('ACCESS_TOKEN_NAME')!))
-    res.clearCookie(base64urlEncode(this.configService.get<string>('REFRESH_TOKEN_NAME')!))
-    return res.status(204).send()
+    res.clearCookie(
+      base64urlEncode(this.configService.get<string>('ACCESS_TOKEN_NAME')!),
+    );
+    res.clearCookie(
+      base64urlEncode(this.configService.get<string>('REFRESH_TOKEN_NAME')!),
+    );
+    return res.status(204).send();
   }
 }
