@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { PreferenceRepository } from './preference.repository';
-import { Preference } from './preference.entity';
 import {
   CreatePreferenceDto,
   PreferenceDto,
   UpdatePreferenceDto,
 } from './preference.dto';
+import { winstonLogger } from '@utils';
 
 @Injectable()
 export class PreferenceService {
@@ -15,13 +15,23 @@ export class PreferenceService {
     userId: string,
     dto: CreatePreferenceDto,
   ): Promise<PreferenceDto> {
-    const entity = dto.toEntity();
-    const preference = await this.preferenceRepository.save(userId, entity);
-    return PreferenceDto.fromEntity(preference);
+    try {
+      const entity = dto.toEntity();
+      const preference = await this.preferenceRepository.save(userId, entity);
+      return PreferenceDto.fromEntity(preference);
+    } catch (err) {
+      winstonLogger.error('Failed to create preference', err.stack);
+      throw err;
+    }
   }
 
   async updatePreference(dto: UpdatePreferenceDto): Promise<void> {
-    const preference = dto.toEntity();
-    await this.preferenceRepository.updatePreferenceById(dto.id, preference);
+    try {
+      const preference = dto.toEntity();
+      await this.preferenceRepository.updatePreferenceById(dto.id, preference);
+    } catch (err) {
+      winstonLogger.error('Failed to update preference', err.stack);
+      throw err;
+    }
   }
 }
