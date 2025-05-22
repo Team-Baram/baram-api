@@ -10,12 +10,29 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
+    "paths": {
+      "@utils": ["./src/utils"],
+      "@utils/*": ["./src/utils/*"],
+      "@config": ["./src/config"],
+      "@config/*": ["./src/config/*"],
+      "@exceptions": ["./src/exception"],
+      "@exceptions/*": ["./src/exception/*"],
+      "@middlewares": ["./src/middlewares"],
+      "@middlewares/*": ["./src/middlewares/*"],
+      "@modules": ["./src/modules"],
+      "@modules/*": ["./src/modules/*"],
+      "@guards": ["./src/guards"],
+      "@guards/*": ["./src/guards/*"],
+      "@src": ["./src"],
+      "@src/*": ["./src/*"],
+    },
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "typeRoots": ["./types", "./node_modules/@types"]
   }
 }
