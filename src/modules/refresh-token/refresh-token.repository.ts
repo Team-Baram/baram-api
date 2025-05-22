@@ -11,16 +11,10 @@ export class RefreshTokenRepository {
   }
 
   async findByTokenHash(tokenHash: string): Promise<RefreshToken | null> {
-    try {
-      return await this.repo.findOne({
-        where: { tokenHash },
-        relations: ['user'],
-      });
-    } catch (err) {
-      throw new InternalServerErrorException(
-        'findByTokenHash in RefreshTokenRepository',
-      );
-    }
+    return await this.repo.findOne({
+      where: { tokenHash },
+      relations: ['user'],
+    });
   }
 
   async registerToken(
@@ -30,53 +24,35 @@ export class RefreshTokenRepository {
     ip: string,
     userAgent: string,
   ): Promise<RefreshToken> {
-    try {
-      return await this.dataSource.transaction(async (manager) => {
-        const repo = manager.getRepository(RefreshToken);
-        const token = this.repo.create({
-          tokenHash,
-          user: { id: userId } as any,
-          expiresAt,
-          ip,
-          userAgent,
-        });
-        return await repo.save(token);
+    return await this.dataSource.transaction(async (manager) => {
+      const repo = manager.getRepository(RefreshToken);
+      const token = this.repo.create({
+        tokenHash,
+        user: { id: userId } as any,
+        expiresAt,
+        ip,
+        userAgent,
       });
-    } catch (err) {
-      throw new InternalServerErrorException(
-        'registerToken in RefreshTokenRepository',
-      );
-    }
+      return await repo.save(token);
+    });
   }
 
   async deleteTokenByUserIdAndUserAgent(
     userId: string,
     userAgent: string,
   ): Promise<void> {
-    try {
-      await this.dataSource.transaction(async (manager) => {
-        await manager
-          .getRepository(RefreshToken)
-          .delete({ user: { id: userId }, userAgent });
-      });
-    } catch (err) {
-      throw new InternalServerErrorException(
-        'deleteTokenByHash in RefreshTokenRepository',
-      );
-    }
+    await this.dataSource.transaction(async (manager) => {
+      await manager
+        .getRepository(RefreshToken)
+        .delete({ user: { id: userId }, userAgent });
+    });
   }
 
   async deleteAllTokensForUser(userId: string): Promise<void> {
-    try {
-      await this.dataSource.transaction(async (manager) => {
-        await manager
-          .getRepository(RefreshToken)
-          .delete({ user: { id: userId } });
-      });
-    } catch (err) {
-      throw new InternalServerErrorException(
-        'deleteTokenByHash in RefreshTokenRepository',
-      );
-    }
+    await this.dataSource.transaction(async (manager) => {
+      await manager
+        .getRepository(RefreshToken)
+        .delete({ user: { id: userId } });
+    });
   }
 }

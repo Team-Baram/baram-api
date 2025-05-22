@@ -14,31 +14,21 @@ export class ContactRepository {
     return this.dataSource.getRepository(Contact);
   }
 
-  async findByUserId(userId: string): Promise<Contact[] | null> {
-    try {
-      return await this.repo.find({
-        where: { user: { id: userId } },
-        order: { createdAt: 'DESC' },
-      });
-    } catch (err) {
-      throw new InternalServerErrorException(
-        'findByUserId in ContactRepository',
-      );
-    }
+  async findByUserId(userId: string): Promise<Contact[]> {
+    return await this.repo.find({
+      where: { user: { id: userId } },
+      order: { createdAt: 'DESC' },
+    });
   }
 
   async save(userId: string, contactData: Partial<Contact>): Promise<Contact> {
-    try {
-      return this.dataSource.transaction(async (manager) => {
-        const repo = manager.getRepository(Contact);
-        const contact = repo.create({
-          user: { id: userId } as any,
-          ...contactData,
-        });
-        return await repo.save(contact);
+    return this.dataSource.transaction(async (manager) => {
+      const repo = manager.getRepository(Contact);
+      const contact = repo.create({
+        user: { id: userId } as any,
+        ...contactData,
       });
-    } catch (err) {
-      throw new InternalServerErrorException('save in ContactRepository');
-    }
+      return await repo.save(contact);
+    });
   }
 }
