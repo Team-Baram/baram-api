@@ -36,7 +36,10 @@ export class RefreshTokenService {
   }
 
   async revokeToken(userId: string, userAgent: string): Promise<void> {
-    await this.refreshTokenRepository.deleteTokenByUserIdAndUserAgent(userId, userAgent);
+    await this.refreshTokenRepository.deleteTokenByUserIdAndUserAgent(
+      userId,
+      userAgent,
+    );
   }
 
   async revokeAllTokensForUser(userId: string): Promise<void> {

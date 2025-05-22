@@ -4,8 +4,8 @@ import * as path from 'path';
 import { DatabaseModule, RedisCacheModule } from '@config';
 import { AuthModule } from '@modules/auth/auth.module';
 import { UserModule } from '@modules/user/user.module';
-import { PreferenceModule } from '@modules/preference/preference.module'
-import { ContactModule } from '@modules/contact/contact.module'
+import { PreferenceModule } from '@modules/preference/preference.module';
+import { ContactModule } from '@modules/contact/contact.module';
 import { LoggerMiddleware } from '@middlewares';
 
 const envFileName =
@@ -26,7 +26,7 @@ const envFileName =
     AuthModule,
     UserModule,
     PreferenceModule,
-    ContactModule
+    ContactModule,
   ],
 })
 export class AppModule implements NestModule {

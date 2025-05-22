@@ -7,9 +7,13 @@ import {
   OneToMany,
 } from 'typeorm';
 import { RefreshToken } from '@modules/refresh-token/refresh-token.entity';
-import { Preference } from '@modules/preference/preference.entity'
+import { Preference } from '@modules/preference/preference.entity';
 import { Contact } from '@modules/contact/contact.entity';
-import { UpdateNicknameDto, UpdateProfileDto, UpdateAccountDto } from '@modules/user/user.dto'
+import {
+  UpdateNicknameDto,
+  UpdateProfileDto,
+  UpdateAccountDto,
+} from '@modules/user/user.dto';
 
 @Entity()
 export class User {
@@ -40,39 +44,45 @@ export class User {
   preferences: Preference[];
 
   @OneToMany(() => Contact, (contact) => contact.user)
-  contacts: Contact[]
+  contacts: Contact[];
 
-  static fromUpdateNicknameDto({ nickname } : UpdateNicknameDto): Partial<User> {
-    const user: Partial<User> = {}
+  static fromUpdateNicknameDto({ nickname }: UpdateNicknameDto): Partial<User> {
+    const user: Partial<User> = {};
     if (nickname !== undefined) {
-      user.nickname = nickname
+      user.nickname = nickname;
     }
-    return user
+    return user;
   }
 
-
-  static fromUpdateProfileDto({ avatarUrl, isReportPublic }: UpdateProfileDto): Partial<User> {
-    const user: Partial<User> = {}
-    if (avatarUrl!== undefined) {
-      user.avatarUrl = avatarUrl
+  static fromUpdateProfileDto({
+    avatarUrl,
+    isReportPublic,
+  }: UpdateProfileDto): Partial<User> {
+    const user: Partial<User> = {};
+    if (avatarUrl !== undefined) {
+      user.avatarUrl = avatarUrl;
     }
     if (isReportPublic !== undefined) {
-      user.isReportPublic = isReportPublic 
+      user.isReportPublic = isReportPublic;
     }
-    return user
+    return user;
   }
 
-  static fromUpdateAccountDto({ nickname, mobile, mobileE164 }: UpdateAccountDto): Partial<User> {
-    const user: Partial<User> = {}
+  static fromUpdateAccountDto({
+    nickname,
+    mobile,
+    mobileE164,
+  }: UpdateAccountDto): Partial<User> {
+    const user: Partial<User> = {};
     if (nickname !== undefined) {
-      user.nickname = nickname 
+      user.nickname = nickname;
     }
     if (mobile !== undefined) {
-      user.mobile = mobile 
+      user.mobile = mobile;
     }
     if (mobileE164 !== undefined) {
-      user.mobileE164 = mobileE164
+      user.mobileE164 = mobileE164;
     }
-    return user
+    return user;
   }
 }

@@ -62,7 +62,7 @@ export class AuthService {
     });
     const refreshToken = uuidv4();
 
-    await this.refreshTokenService.revokeToken(payload.id, userAgent)
+    await this.refreshTokenService.revokeToken(payload.id, userAgent);
     const expiresAt = new Date();
     expiresAt.setDate(expiresAt.getDate() + 14);
     await this.refreshTokenService.registerToken(

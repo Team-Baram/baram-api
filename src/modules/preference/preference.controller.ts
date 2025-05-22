@@ -1,32 +1,37 @@
 import {
-    Controller,
-    Post,
-    Patch,
-    Req,
-    Res,
-    Body,
-    UseGuards,
-    HttpStatus,
-    HttpException
-} from '@nestjs/common'
-import { Request, Response } from 'express'
-import { PreferenceService } from './preference.service'
-import { AuthGuard } from '@guards/auth.guard'
-import { CreatePreferenceDto, UpdatePreferenceDto } from './preference.dto'
+  Controller,
+  Post,
+  Patch,
+  Req,
+  Res,
+  Body,
+  UseGuards,
+  HttpStatus,
+  HttpException,
+} from '@nestjs/common';
+import { Request, Response } from 'express';
+import { PreferenceService } from './preference.service';
+import { AuthGuard } from '@guards/auth.guard';
+import { CreatePreferenceDto, UpdatePreferenceDto } from './preference.dto';
 
 @Controller('/api/preference')
 export class PreferenceController {
-  constructor(
-    private readonly preferenceService: PreferenceService
-  ){}
+  constructor(private readonly preferenceService: PreferenceService) {}
 
   @UseGuards(AuthGuard)
   @Post('')
-  async createPrefernece(@Req() req: Request, @Res() res: Response, @Body() body: CreatePreferenceDto) {
+  async createPrefernece(
+    @Req() req: Request,
+    @Res() res: Response,
+    @Body() body: CreatePreferenceDto,
+  ) {
     try {
-      const preference = await this.preferenceService.createPreference(req.user!.id, body)
-    
-      return res.status(HttpStatus.OK).send(preference)
+      const preference = await this.preferenceService.createPreference(
+        req.user!.id,
+        body,
+      );
+
+      return res.status(HttpStatus.OK).send(preference);
     } catch (err) {
       throw new HttpException(
         {
@@ -40,13 +45,17 @@ export class PreferenceController {
 
   @UseGuards(AuthGuard)
   @Post('/onboarding')
-  async createPreferneceOnBoarding(@Req() req: Request, @Res() res: Response, @Body() body: CreatePreferenceDto) {
+  async createPreferneceOnBoarding(
+    @Req() req: Request,
+    @Res() res: Response,
+    @Body() body: CreatePreferenceDto,
+  ) {
     try {
-      await this.preferenceService.createPreference(req.user!.id, body)
+      await this.preferenceService.createPreference(req.user!.id, body);
 
-      res.clearCookie('onboarding')
-    
-      return res.status(HttpStatus.OK).send({ redirectURL: '/' })
+      res.clearCookie('onboarding');
+
+      return res.status(HttpStatus.OK).send({ redirectURL: '/' });
     } catch (err) {
       throw new HttpException(
         {
@@ -60,11 +69,15 @@ export class PreferenceController {
 
   @UseGuards(AuthGuard)
   @Patch('')
-  async updatePrefernece(@Req() req: Request, @Res() res: Response, @Body() body: UpdatePreferenceDto) {
+  async updatePrefernece(
+    @Req() req: Request,
+    @Res() res: Response,
+    @Body() body: UpdatePreferenceDto,
+  ) {
     try {
-      await this.preferenceService.updatePreference(body)
+      await this.preferenceService.updatePreference(body);
 
-      return res.status(HttpStatus.OK).send(body)
+      return res.status(HttpStatus.OK).send(body);
     } catch (err) {
       throw new HttpException(
         {
