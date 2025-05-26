@@ -19,19 +19,24 @@ export class ContactRepository {
       where: { id: contactId },
     });
 
-    return contact
+    return contact;
   }
 
-  async findByUserId(userId: string, page: number, limit: number, status?: 'pending' | 'answered'): Promise<{contacts: Contact[], total: number}> {
+  async findByUserId(
+    userId: string,
+    page: number,
+    limit: number,
+    status?: 'pending' | 'answered',
+  ): Promise<{ contacts: Contact[]; total: number }> {
     const [contacts, total] = await this.repo.findAndCount({
       select: ['id', 'title', 'status', 'createdAt'],
       where: { user: { id: userId }, ...(status && { status }) },
       order: { createdAt: 'DESC' },
       take: limit,
-      skip: (page - 1) * limit
+      skip: (page - 1) * limit,
     });
 
-    return { contacts, total}
+    return { contacts, total };
   }
 
   async countContactsGroupedByStatus(userId: string): Promise<{

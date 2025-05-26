@@ -36,28 +36,28 @@ export class ContactDto {
 }
 
 export class PaginatedContactDto {
-  data: ContactDto[]
-  total: number
-  page: number
-  limit: number
+  data: ContactDto[];
+  total: number;
+  page: number;
+  limit: number;
 
   constructor(data: ContactDto[], total: number, page: number, limit: number) {
-    this.data = data
-    this.total = total
-    this.page = page
-    this.limit = limit
+    this.data = data;
+    this.total = total;
+    this.page = page;
+    this.limit = limit;
   }
 }
 
 export class ContactSummaryDto {
-  total: number
-  pending: number
-  answered: number
+  total: number;
+  pending: number;
+  answered: number;
 
   constructor(total: number, pending: number, answered: number) {
-    this.total = total
-    this.pending = pending
-    this.answered = answered
+    this.total = total;
+    this.pending = pending;
+    this.answered = answered;
   }
 }
 

@@ -26,9 +26,13 @@ export class ContactController {
   @Get('/summary')
   async getContactSummary(@Req() req: Request, @Res() res: Response) {
     try {
-      const contactSummaryDto = await this.contactService.fetchContactSummary(req.user!.id);
+      const contactSummaryDto = await this.contactService.fetchContactSummary(
+        req.user!.id,
+      );
 
-      return res.status(HttpStatus.OK).send({ contactSummary: contactSummaryDto });
+      return res
+        .status(HttpStatus.OK)
+        .send({ contactSummary: contactSummaryDto });
     } catch (err) {
       throw new HttpException(
         {
@@ -43,16 +47,23 @@ export class ContactController {
   @UseGuards(AuthGuard)
   @Get('')
   async getContacts(
-      @Req() req: Request, 
-      @Res() res: Response, 
-      @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number, 
-      @Query('limit', new DefaultValuePipe(1), ParseIntPipe) limit: number,
-      @Query('status') status?: 'pending' | 'answered' 
+    @Req() req: Request,
+    @Res() res: Response,
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+    @Query('limit', new DefaultValuePipe(1), ParseIntPipe) limit: number,
+    @Query('status') status?: 'pending' | 'answered',
   ) {
     try {
-      const paginatedContactDto = await this.contactService.fetchContacts(req.user!.id, page, limit, status);
+      const paginatedContactDto = await this.contactService.fetchContacts(
+        req.user!.id,
+        page,
+        limit,
+        status,
+      );
 
-      return res.status(HttpStatus.OK).send({ paginatedContact: paginatedContactDto });
+      return res
+        .status(HttpStatus.OK)
+        .send({ paginatedContact: paginatedContactDto });
     } catch (err) {
       throw new HttpException(
         {
@@ -66,7 +77,11 @@ export class ContactController {
 
   @UseGuards(AuthGuard)
   @Get('/:id')
-  async getContact(@Req() req: Request, @Res() res: Response, @Param('id') contactId: string) {
+  async getContact(
+    @Req() req: Request,
+    @Res() res: Response,
+    @Param('id') contactId: string,
+  ) {
     try {
       const contactDto = await this.contactService.fetchContact(contactId);
 

@@ -65,7 +65,7 @@ export class UserController {
         sameSite: 'lax',
       });
 
-      return res.status(HttpStatus.OK).send()
+      return res.status(HttpStatus.OK).send();
     } catch (err) {
       throw new HttpException(
         {
