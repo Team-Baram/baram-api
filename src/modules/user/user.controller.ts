@@ -1,6 +1,7 @@
 import {
   Controller,
   Get,
+  Post,
   Patch,
   Delete,
   Req,
@@ -48,6 +49,28 @@ export class UserController {
         {
           status: HttpStatus.BAD_REQUEST,
           error: 'fail to read nickname',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('/onboarding')
+  async redirectOnBoarding(@Req() req: Request, @Res() res: Response) {
+    try {
+      res.cookie('onboarding', true, {
+        httpOnly: false,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+      });
+
+      return res.status(HttpStatus.OK).send()
+    } catch (err) {
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          error: 'fail to redirect /onboarding/preference',
         },
         HttpStatus.BAD_REQUEST,
       );
